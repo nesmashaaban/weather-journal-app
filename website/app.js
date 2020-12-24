@@ -27,9 +27,9 @@ let newDate = d.getMonth()+1 + '.' +  d.getDate() + '.' + d.getFullYear();
 // main function
 collectData()
 {   
-    let yourFeeling = document.getElementById('feelings').value;
+    let Feeling = document.getElementById('feelings').value;
     let zipCode = document.getElementById('zip').value;
-    if(zipCode == 0)
+    if(zipCode == '')
         {
             alert("Enter Zip Code.");
         }
@@ -38,20 +38,19 @@ collectData()
             getWeather(baseURL,zipCode,apiKey) //the retrieved weather
 
             //posting all data on my page
-            .then(function(data)
-            {
-                postData('/postOnServer', {'Date': newDate , 'Temprature': data.main.temp , 'Feeling': yourFeeling});
-            });
+            .then(function(data){
+                postData('/allData/', {Date: newDate , main: data.main.temp , Feeling: Feeling});
+            })
 
             //updating the page
-            .then(
+            .then(function()=>{
                 updatePage();
-                );
-        }
+        });
+        
 }
 
 //collect data from external Api
-const getWether = async function()
+const getWeather = async function(baseURL,zipCode,apiKey)
 {
     const result = await fetch(baseURL+zipCode+apiKey);
     try
@@ -67,7 +66,7 @@ const getWether = async function()
 
 //function to post all data into server
 const postData = async function(url = '', data = {}){
-    const response = await fetch('/postDataOnServer', {
+    const response = await fetch(url, {
         method: 'post',
         credentials: 'same-origin',
         headers:{
@@ -89,7 +88,7 @@ const postData = async function(url = '', data = {}){
 
 ////Update the page with new data
 const updatePage = async ()=>{
-    const newUpdatedData = await fetch('/getAllData');
+    const newUpdatedData = await fetch('/allData'/);
     try{
         const allData = await newUpdatedData.json();
         document.getElementById('date').innerHTML = allData.Date;
