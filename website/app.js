@@ -35,7 +35,7 @@ collectData()
         }
     else
         {
-            getWeather(baseURL,zipCode,apiKey); //the retrieved weather
+            getWeather(baseURL,zipCode,apiKey) //the retrieved weather
 
             //posting all data on my page
             .then(function(data)
