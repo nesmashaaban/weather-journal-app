@@ -36,60 +36,29 @@ function listining()
     console.log(`running on localhost: ${port}`);
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////
-
-
-/*
-//get data from external api
-let retrievedData = {};
-let retrievedTemprature ;
-
-app.get('', collectData);
-
-function collectData(request, response)
-{  
-    retrievedTemprature = retrievedData.main.temp;
-    response.send(retrievedTemprature);
-}
-*/
-
+//////////////////////////////////////////////////////////////////////////////////////////////
 
 
 //Post all data into the local server
-app.post('/postDataOnServer', postData);
+app.post('/allData/', postData);
 
 function postData(request, response)
 {
     let result = request.body;
     projectData = {
-        'Temprature': result.Temprature,
-        'Date': result.Date,
-        'Feeling': result.Feeling
-    }   
+        Temprature: result.main.Temprature,
+        Date: result.Date,
+        Feeling: result.Feeling
+    }
+    response.send(projectData);
 }
 
 
 
 //get all data from the object endpoint 
-app.get('/getAllData', getData);
+app.get('/allData/', getData);
 
 function getData(request, response)
 {
     response.send(projectData);
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
